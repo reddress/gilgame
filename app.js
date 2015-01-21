@@ -3,7 +3,7 @@
 
 // build account tree
 
-var account_tree = { id: "root", balance: 0, children: [] };
+var account_tree = { id: "root", children: [] };
 
 function add_to_children(tree, child) {
   if (tree.id === child.parent) {
@@ -93,7 +93,7 @@ initialize_accounts(accounts);
 build_tree(account_tree);
 
 function log_tree() {
-  console.log(JSON.stringify(account_tree, undefined, 2));
+  console.log(JSON.stringify(account_tree, null, 2));
 }
 
 transactions.forEach(function(transaction_str) {
