@@ -8,4 +8,5 @@ transactions = [
   "15/1/15; french fries; 12; expenses; assets",
   "19/1/15; juros diario; .03; assets; itjur",
   "21/1/15; neg liab; 200.1200; liabilities; assets",
+  "22/1/15; should be hidden; 123; assets; income",
 ];

@@ -10,4 +10,4 @@ Edit data files `accountdata.js` and `transactiondata.js`
 
 * start and end date text fields for filtering transactions
 
-* add a "display" or "depth" property
+* click on account to filter by transaction matching debit or credit to that account (combine all filters) 
