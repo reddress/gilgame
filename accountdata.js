@@ -1,37 +1,37 @@
 var accounts = [ 
   {
-    name: "Assets",
-    id: "assets",
-    parent: "root",
-    sign: 1,
-  },
-
-  {
     name: "Expenses",
     id: "expenses",
-    parent: "root",
+    parent: "accounts",
     sign: 1,
   },
 
   {
     name: "Equity",
     id: "equity",
-    parent: "root",
+    parent: "accounts",
     sign: -1,
   },
 
   {
     name: "Liabilities",
     id: "liabilities",
-    parent: "root",
+    parent: "accounts",
     sign: -1,
   },
 
   {
     name: "Income",
     id: "income",
-    parent: "root",
+    parent: "accounts",
     sign: -1,
+  },
+
+  {
+    name: "Assets",
+    id: "assets",
+    parent: "accounts",
+    sign: 1,
   },
 
   {
@@ -89,5 +89,5 @@ var accounts = [
     parent: "",
     sign: 1,
   },
-    
+  
 ];

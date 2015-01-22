@@ -5,10 +5,27 @@
 	<title>Gilgame - A Gil-hoarding Turtle</title>
   </head>
   <body>
-	Open Developer tools (F12) and evaluate log_tree()
+	<div id="tree_display" style="display: block; float: left;"></div>
+	<div id="list_display" style="display: block; float: left;">
+	  <table id="list_table">
+		<tr>
+		  <td>Date</td>
+		  <td>Description</td>
+		  <td>debit</td>
+		  <td>credit</td>
+		  <td>Amount</td>
+		</tr>
+	  </table>
+	</div>
+
+	<div id="controls" style="display: block; float: left;">
+	  <input type="button" id="million_button" value="Millionaire me!">
+	</div>
+	
 	<script src="accountdata.js"></script>
 	<script src="transactiondata.js"></script>
 	<script src="parsers.js"></script>
+	<script src="formatters.js"></script>
 	<script src="test.js"></script>
 	<script src="app.js"></script>
   </body>

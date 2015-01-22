@@ -45,3 +45,27 @@ test_amount_parsing("1.1", 110);
 
 // starts with separator
 test_amount_parsing(",02", 2);
+
+
+// test balance formatting
+
+function test_balance_formatting(amount, amount_str) {
+  if (display_balance(amount) !== amount_str) {
+    alert("Amount displayed incorrectly: " + amount);
+  }
+}
+
+// varying sizes of cents
+test_balance_formatting(0, "0.00");
+test_balance_formatting(1, "0.01");
+test_balance_formatting(10, "0.10");
+test_balance_formatting(100, "1.00");
+test_balance_formatting(1000, "10.00");
+test_balance_formatting(12345, "123.45");
+
+// negative amounts
+test_balance_formatting(-1, "-0.01");
+test_balance_formatting(-10, "-0.10");
+test_balance_formatting(-100, "-1.00");
+test_balance_formatting(-1000, "-10.00");
+test_balance_formatting(-12345, "-123.45");

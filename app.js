@@ -3,7 +3,7 @@
 
 // build account tree
 
-var account_tree = { id: "root", children: [] };
+var account_tree = { id: "accounts", children: [] };
 
 function add_to_children(tree, child) {
   if (tree.id === child.parent) {
@@ -30,7 +30,7 @@ function alter_balance(id, amount) {
 }
 
 function bubble_amount(source, amount) {
-  if (source !== 'root') {
+  if (source !== 'accounts') {
     accounts.forEach(function(account) {
       if (account.id === source) {
         alter_balance(source, amount);
@@ -40,7 +40,7 @@ function bubble_amount(source, amount) {
   }
 }
 
-function parse_transaction(s) {
+function parse_and_add_transaction(s) {
   var parts = s.split(";");
   for (var i = 0, end = parts.length; i < end; i++) {
     parts[i] = parts[i].trim();
@@ -54,7 +54,7 @@ function add_transaction(desc, amount_str, debit, credit, date_millis) {
   // not sanitized
 
   if (account_exists(debit) && account_exists(credit)) {
-  
+    
     var amount = parse_amount(amount_str)
     
     transactions.push({
@@ -87,15 +87,68 @@ function initialize_accounts(accounts) {
     account.children = [];
   });
 }
-
-initialize_accounts(accounts);
-
-build_tree(account_tree);
-
+  
 function log_tree() {
   console.log(JSON.stringify(account_tree, null, 2));
 }
 
-transactions.forEach(function(transaction_str) {
-  parse_transaction(transaction_str);
+
+function htmlify_tree(node) {
+  var contents = "";
+  if (node.id !== "accounts") {
+    contents = '<span title="' + (node.name || "Accounts") + '">' +
+      node.id + '</span> <span id="' + node.id + '_balance">' +
+      display_balance(node.balance || 0) +
+      "</span>" +
+      "";
+  } else {
+    contents = "Accounts";
+  }
+  
+  var html_tree = "<ul><li>" + contents;
+
+  node.children.forEach(function(child) {
+    html_tree += htmlify_tree(child);
+  });
+  html_tree += "</li></ul>";
+  return html_tree;
+}
+
+function update_page() {
+  initialize_accounts(accounts);
+
+  build_tree(account_tree);
+
+  transactions.forEach(function(transaction_str) {
+    parse_and_add_transaction(transaction_str);
+  });
+
+  document.getElementById("tree_display").innerHTML = htmlify_tree(account_tree);
+}
+
+update_page();
+
+
+function apply_transaction_filter(transactions, filter) {
+  var filtered = [];
+  transactions.forEach(function(transaction) {
+    if (filter(transaction)) {
+      filtered.push(transaction);
+    }
+  });
+  return filtered;
+}
+
+console.log(JSON.stringify(apply_transaction_filter(transactions, function(t) { return t.debit === 'expenses' })));
+
+
+console.log("Ready");
+
+// interactions
+
+// date filter
+document.getElementById("million_button").addEventListener('click', function(event) {
+  document.getElementById("assets_balance").innerHTML = "$1,000,000";
 });
+
+// desc filter

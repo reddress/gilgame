@@ -1,3 +1,36 @@
+var my_tree = {
+  "id": "accounts",
+  "children": [
+    {"id": "expenses",
+     "children": [
+       {"id": "groceries",
+        "children": [],},
+       {"id": "medical",
+        "children": [],},
+     ]
+    },
+  ]
+};
+
+var income_branch =
+  {
+    "name": "Income",
+    "id": "income",
+    "parent": "root",
+    "sign": -1,
+    "balance": 3,
+    "children": [
+      {
+        "name": "Pontual salário",
+        "id": "ptlsal",
+        "parent": "income",
+        "sign": -1,
+        "balance": 0,
+        "children": []
+      },
+    ],
+  };
+
 // amounts in cents
 
 transaction_object = [
