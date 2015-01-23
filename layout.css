@@ -1,0 +1,25 @@
+div {
+	display: block;
+	float: left;
+	padding: 0 15px 0 0;
+}
+
+table {
+	border-width: 0 0 1px 1px;
+	border-spacing: 0;
+	border-style: solid;
+	border-collapse: collapse;
+}
+
+td {
+	border-width: 1px 1px 0 0;
+	border-style: solid;
+	margin: 0;
+	padding: 3px;
+}
+
+ul {
+    margin-top: 0;
+    padding-left: 15px;
+    margin-left: 0;
+}

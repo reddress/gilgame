@@ -3,29 +3,34 @@
   <head>
 	<meta charset="utf-8">	
 	<title>Gilgame - A Gil-hoarding Turtle</title>
+	<link rel="stylesheet" href="layout.css">
   </head>
   <body>
-	<div id="tree_display" style="display: block; float: left;"></div>
-	<div id="list_display" style="display: block; float: left;">
-	  <table id="list_table">
-		<tr>
-		  <td>Date</td>
-		  <td>Description</td>
-		  <td>debit</td>
-		  <td>credit</td>
-		  <td>Amount</td>
-		</tr>
-	  </table>
-	</div>
+	LATER, CHANGE TO secret_ VERSIONS OF DATA<hr>
+	
+	<div id="balances">Current balances</div>
 
-	<div id="controls" style="display: block; float: left;">
-	  <input type="button" id="million_button" value="Millionaire me!">
+	<div id="tree_display"></div>
+	
+	<div id="list_display">
+	  Account: <input type="text" id="focused_account" size="12"><hr>
+	  <form action="#">
+		Start date: <input type="text" id="start_date" size="5">
+		End: <input type="text" id="end_date" size="5">
+		<input type="submit" id="update_button" value="Update">
+		<input type="button" id="clear_dates" value="Clear dates">
+	  </form>
+	  
+	  <hr>
+	  
+	  <table id="list_table"></table>
 	</div>
 	
 	<script src="accountdata.js"></script>
 	<script src="transactiondata.js"></script>
 	<script src="parsers.js"></script>
 	<script src="formatters.js"></script>
+	<script src="balances.js"></script>
 	<script src="test.js"></script>
 	<script src="app.js"></script>
   </body>

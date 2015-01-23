@@ -1,12 +1,13 @@
 // format:
 // "day-month-year; description; amount; debit; credit",
 
-transactions = [
-  "21/1/15; opening balance; 1000,00; assets; open",
+var transactions = [
+  "30/1/15; expected payment; 300; expenses; assets",
+  "1/1/15; opening balance; 10000,00; assets; open",
 
   // made-up data
-  "15/1/15; french fries; 12; expenses; assets",
-  "19/1/15; juros diario; .03; assets; itjur",
-  "21/1/15; neg liab; 200.1200; liabilities; assets",
-  "22/1/15; show; 123; assets; income",
+  "15/1/15; french fries; 100; expenses; assets",
+  "19/1/15; juros diario; .10; assets; itjur",
+  "21/1/15; credit card overpaid; 300.00; liabilities; assets",
+  "22/1/15; salario; 500; assets; income",
 ];

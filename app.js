@@ -4,6 +4,7 @@
 // build account tree
 
 var account_tree = { id: "accounts", children: [] };
+var children_ids = {};
 
 function add_to_children(tree, child) {
   if (tree.id === child.parent) {
@@ -20,6 +21,7 @@ function build_tree(tree) {
     add_to_children(tree, account);
   });
 }
+
 
 function alter_balance(id, amount) {
   accounts.forEach(function(account) {
@@ -46,24 +48,41 @@ function parse_and_add_transaction(s) {
     parts[i] = parts[i].trim();
   }
   
-  add_transaction(parts[1], parts[2], parts[3], parts[4], parse_dmy(parts[0]));
+  add_transaction_from_string_parts(parts[1], parts[2], parts[3], parts[4], parse_dmy(parts[0]));
 }
 
-function add_transaction(desc, amount_str, debit, credit, date_millis) {
+function parse_transaction(s) {
+  var parts = s.split(";");
+  for (var i = 0, end = parts.length; i < end; i++) {
+    parts[i] = parts[i].trim();
+  }
+  
+  return { 'millis': parse_dmy(parts[0]),
+           'desc': parts[1],
+           'amount': parse_amount(parts[2]),
+           'debit': parts[3],
+           'credit': parts[4],
+           'raw_date': parts[0],
+         };
+}
+
+function build_transaction_list(transaction_str_list) {
+  var transactions_list = [];
+
+  transaction_str_list.forEach(function(transaction_str) {
+    transactions_list.push(parse_transaction(transaction_str));
+  });
+
+  return transactions_list;
+}
+
+function add_transaction_from_string_parts(desc, amount_str, debit, credit, date_millis) {
   // accept amount as string, remove dot or comma
   // not sanitized
 
   if (account_exists(debit) && account_exists(credit)) {
     
     var amount = parse_amount(amount_str)
-    
-    transactions.push({
-      desc: desc,
-      amount: amount,
-      debit: debit,
-      credit: credit,
-      millis: date_millis,
-    });
 
     accounts.forEach(function(account) {
       if (account.id === debit) {
@@ -81,10 +100,66 @@ function add_transaction(desc, amount_str, debit, credit, date_millis) {
   }
 }
 
+function add_transaction(transaction) {
+  // accept amount as string, remove dot or comma
+  // not sanitized
+
+  if (account_exists(transaction.debit) && account_exists(transaction.credit)) {
+    
+    var amount = transaction.amount;
+
+    accounts.forEach(function(account) {
+      if (account.id === transaction.debit) {
+        // account.balance += account.sign * amount;
+        bubble_amount(account.id, account.sign * amount);
+      }
+      if (account.id === transaction.credit) {
+        // account.balance -= account.sign * amount;
+        bubble_amount(account.id, account.sign * amount * (-1));
+      }
+    });
+    
+  } else {
+    alert("Account(s) does not exist. " + debit + "/" + credit);
+  }
+}
+
 function initialize_accounts(accounts) {
   accounts.forEach(function(account) {
     account.balance = 0;
     account.children = [];
+    account.children_ids = [];
+  });
+}
+
+function get_children_ids(root) {
+  var output = root.id + ";";
+  
+  function traverse(node) {
+    node.children.forEach(function(child) {
+      output += child.id + ";";
+      if (child.children.length > 0) {
+        traverse(child);
+      }
+    });
+  }
+
+  traverse(root);
+  children_ids[root.id] = output.substring(0, output.length-1).split(";");
+  return children_ids[root.id];
+}
+
+function save_children_ids(node) {
+  // populate the children_ids object
+  get_children_ids(node);
+  node.children.forEach(function(child) {
+    save_children_ids(child);
+  });
+}
+
+function zero_accounts(accounts) {
+  accounts.forEach(function(account) {
+    account.balance = 0;
   });
 }
   
@@ -96,7 +171,7 @@ function log_tree() {
 function htmlify_tree(node) {
   var contents = "";
   if (node.id !== "accounts") {
-    contents = '<span title="' + (node.name || "Accounts") + '">' +
+    contents = '<span title="' + (node.name || "Accounts") + '" onclick="set_account_and_update(\'' + (node.id || "accounts" )+ '\');">' +
       node.id + '</span> <span id="' + node.id + '_balance">' +
       display_balance(node.balance || 0) +
       "</span>" +
@@ -114,20 +189,49 @@ function htmlify_tree(node) {
   return html_tree;
 }
 
-function update_page() {
-  initialize_accounts(accounts);
+function htmlify_always_show(node) {
+  // compute and freeze values for accounts that always show
+  // current balances
+  
+  var html = "";
+  if (always_show.indexOf(node.id) !== -1) {
+    html += node.id + " " + display_balance(node.balance) + "<br>";
+  }
 
-  build_tree(account_tree);
-
-  transactions.forEach(function(transaction_str) {
-    parse_and_add_transaction(transaction_str);
+  node.children.forEach(function(child) {
+    html += htmlify_always_show(child);
   });
 
-  document.getElementById("tree_display").innerHTML = htmlify_tree(account_tree);
+  return html;
 }
 
-update_page();
 
+function htmlify_transaction_list(focused_account, transaction_list) {
+  var table_rows = '<tr><td colspan="5"><b>Account:</b> ' + focused_account + '</td></tr>' + 
+    "<tr><td>Date</td><td>debit</td><td>credit</td><td>Description</td><td>Amount</td></tr>";
+
+  transaction_list.forEach(function(transaction) {
+    if (transaction.debit === focused_account) {
+      transaction.debit = "<b>" + transaction.debit + "</b>";
+    }
+    if (transaction.credit === focused_account) {
+      transaction.credit = "<b>" + transaction.credit + "</b>";
+    }
+    
+    table_rows += "<tr><td>" +
+      transaction.raw_date +
+      "</td><td>" +
+      transaction.debit +
+      "</td><td>" +
+      transaction.credit +
+      "</td><td>" +
+      transaction.desc +
+      "</td><td>" +
+      display_balance(transaction.amount) +
+      "</td></tr>";
+  });
+  return table_rows;
+}
 
 function apply_transaction_filter(transactions, filter) {
   var filtered = [];
@@ -139,16 +243,76 @@ function apply_transaction_filter(transactions, filter) {
   return filtered;
 }
 
-console.log(JSON.stringify(apply_transaction_filter(transactions, function(t) { return t.debit === 'expenses' })));
-
-
 console.log("Ready");
 
 // interactions
-
-// date filter
-document.getElementById("million_button").addEventListener('click', function(event) {
-  document.getElementById("assets_balance").innerHTML = "$1,000,000";
+document.getElementById("update_button").addEventListener('click', function(event) {
+  update_from_form();
 });
 
-// desc filter
+document.getElementById("clear_dates").addEventListener('click', function(event) {
+  document.getElementById("start_date").value = "";
+  document.getElementById("end_date").value = "";
+  update_from_form();
+});
+
+function update_from_form() {
+  var focused_account = document.getElementById("focused_account").value;
+  var start_date = document.getElementById("start_date").value;
+  var end_date = document.getElementById("end_date").value;
+  update_page(transactions, focused_account, start_date, end_date);
+}
+
+function set_account_and_update(account) {
+  document.getElementById("focused_account").value = account;
+  update_from_form();
+}
+
+function update_page(transactions, focused_account, start_date, end_date) {
+  focused_account = focused_account || "accounts";
+  
+  if (start_date) {
+    start_date = parse_dmy(start_date);
+  } else {
+    start_date = -Infinity;
+  }
+
+  if (end_date) {
+    end_date = parse_dmy(end_date);
+  } else {
+    end_date = Infinity;
+  }
+
+  zero_accounts(accounts);
+  
+  var transactions_list = build_transaction_list(transactions);
+  
+  var transactions_in_time_period = apply_transaction_filter(transactions_list, function(transaction) {
+    return transaction.millis >= start_date && transaction.millis <= end_date; });
+
+  transactions_in_time_period.forEach(function(transaction) {
+    add_transaction(transaction);
+  });
+
+  var transactions_for_account_in_time_period = apply_transaction_filter(transactions_in_time_period, function(transaction) {
+    return children_ids[focused_account].indexOf(transaction.debit) !== -1 || children_ids[focused_account].indexOf(transaction.credit) !== -1;
+  });
+
+  document.getElementById("tree_display").innerHTML = htmlify_tree(account_tree);
+
+  document.getElementById("list_table").innerHTML = htmlify_transaction_list(focused_account, transactions_for_account_in_time_period);
+}
+
+function initialize_account_tree() {
+  initialize_accounts(accounts);
+  build_tree(account_tree);
+  save_children_ids(account_tree);
+}
+
+function init() {
+  initialize_account_tree();
+  update_page(transactions);
+  document.getElementById("balances").innerHTML = "Current balances<br><br>" + htmlify_always_show(account_tree);
+}
+
+init();

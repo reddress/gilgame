@@ -29,6 +29,10 @@ function parse_amount(amount_str) {
 
 // date parsing
 function parse_dmy(dmy) {
+  if (dmy.length === 0) {
+    return undefined;
+  }
+  
   dmy = dmy.replace(/\//g, "-");
   var parts = dmy.split("-");
   var year = parseInt(parts[2]);
