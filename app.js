@@ -96,7 +96,7 @@ function add_transaction_from_string_parts(desc, amount_str, debit, credit, date
     });
     
   } else {
-    alert("Account(s) does not exist. " + debit + "/" + credit);
+    alert(desc + ": account(s) does not exist. " + debit + "/" + credit);
   }
 }
 
@@ -120,7 +120,7 @@ function add_transaction(transaction) {
     });
     
   } else {
-    alert("Account(s) does not exist. " + transaction.debit + "/" + transaction.credit);
+    alert(transaction.desc + ": account(s) does not exist. " + transaction.debit + "/" + transaction.credit);
   }
 }
 
