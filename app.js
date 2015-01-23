@@ -172,12 +172,12 @@ function htmlify_tree(node) {
   var contents = "";
   if (node.id !== "accounts") {
     contents = '<span title="' + (node.name || "Accounts") + '" onclick="set_account_and_update(\'' + (node.id || "accounts" )+ '\');">' +
-      node.id + '</span> <span id="' + node.id + '_balance">' +
+      node.id + ' <span id="' + node.id + '_balance">' +
       display_balance(node.balance || 0) +
-      "</span>" +
+      "</span></span>" +
       "";
   } else {
-    contents = "Accounts";
+    contents = '<span onclick="set_account_and_update(\'accounts\')">Accounts</span>';
   }
   
   var html_tree = "<ul><li>" + contents;
