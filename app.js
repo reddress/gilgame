@@ -120,7 +120,7 @@ function add_transaction(transaction) {
     });
     
   } else {
-    alert("Account(s) does not exist. " + debit + "/" + credit);
+    alert("Account(s) does not exist. " + transaction.debit + "/" + transaction.credit);
   }
 }
 

@@ -7,7 +7,6 @@ var transactions = [
 
   // made-up data
   "15/1/15; french fries; 100; expenses; assets",
-  "19/1/15; juros diario; .10; assets; itjur",
   "21/1/15; credit card overpaid; 300.00; liabilities; assets",
   "22/1/15; salario; 500; assets; income",
 ];
