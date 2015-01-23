@@ -206,8 +206,8 @@ function htmlify_always_show(node) {
 }
 
 
-function htmlify_transaction_list(focused_account, transaction_list) {
-  var table_rows = '<tr><td colspan="5"><b>Account:</b> ' + focused_account + '</td></tr>' + 
+function htmlify_transaction_list(focused_account, date_range, transaction_list) {
+  var table_rows = '<tr><td colspan="5"><b>Account:</b> ' + focused_account + ' ' + date_range + '</td></tr>' + 
     "<tr><td>Date</td><td>debit</td><td>credit</td><td>Description</td><td>Amount</td></tr>";
 
   transaction_list.forEach(function(transaction) {
@@ -270,6 +270,10 @@ function set_account_and_update(account) {
 
 function update_page(transactions, focused_account, start_date, end_date) {
   focused_account = focused_account || "accounts";
+
+  // save date strings to include in table header
+  var original_start_date = start_date || "start";
+  var original_end_date = end_date || "end";
   
   if (start_date) {
     start_date = parse_dmy(start_date);
@@ -300,7 +304,7 @@ function update_page(transactions, focused_account, start_date, end_date) {
 
   document.getElementById("tree_display").innerHTML = htmlify_tree(account_tree);
 
-  document.getElementById("list_table").innerHTML = htmlify_transaction_list(focused_account, transactions_for_account_in_time_period);
+  document.getElementById("list_table").innerHTML = htmlify_transaction_list(focused_account, "<b>from</b> " + original_start_date + " to " + original_end_date, transactions_for_account_in_time_period);
 }
 
 function initialize_account_tree() {
