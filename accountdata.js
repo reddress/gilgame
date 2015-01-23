@@ -93,20 +93,6 @@ var accounts = [
   },
   
   {
-    name: "Psiquiatra",
-    id: "psiq",
-    parent: "med",
-    sign: 1,
-  },
-  
-  {
-    name: "Terapia",
-    id: "ter",
-    parent: "med",
-    sign: 1,
-  },
-  
-  {
     name: "Groceries",
     id: "groc",
     parent: "expenses",
@@ -146,13 +132,6 @@ var accounts = [
     name: "Services",
     id: "svc",
     parent: "expenses",
-    sign: 1,
-  },
-  
-  {
-    name: "Valeria",
-    id: "val",
-    parent: "svc",
     sign: 1,
   },
   
