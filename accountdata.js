@@ -44,20 +44,6 @@ var accounts = [
   },
   
   {
-    name: "Livrarias e bancas",
-    id: "livr",
-    parent: "expenses",
-    sign: 1,
-  },
-  
-  {
-    name: "Tarifas de bancos",
-    id: "tar",
-    parent: "expenses",
-    sign: 1,
-  },
-  
-  {
     name: "Communications",
     id: "comm",
     parent: "expenses",
@@ -65,15 +51,15 @@ var accounts = [
   },
   
   {
-    name: "Celular",
-    id: "cel",
+    name: "Cellular",
+    id: "cell",
     parent: "comm",
     sign: 1,
   },
   
   {
-    name: "Correios",
-    id: "corr",
+    name: "Post office",
+    id: "post",
     parent: "comm",
     sign: 1,
   },
@@ -86,7 +72,14 @@ var accounts = [
   },
   
   {
-    name: "Medications and Vitamins",
+    name: "Doctor's visits",
+    id: "doc",
+    parent: "med",
+    sign: 1,
+  },
+
+  {
+    name: "Medications",
     id: "meds",
     parent: "med",
     sign: 1,
@@ -100,7 +93,7 @@ var accounts = [
   },
   
   {
-    name: "Restaurantes",
+    name: "Restaurants",
     id: "rest",
     parent: "expenses",
     sign: 1,
@@ -120,25 +113,10 @@ var accounts = [
     sign: 1,
   },
 
-  
-  {
-    name: "Foods",
-    id: "foods",
-    parent: "rest",
-    sign: 1,
-  },
-  
   {
     name: "Services",
     id: "svc",
     parent: "expenses",
-    sign: 1,
-  },
-  
-  {
-    name: "Caixinhas",
-    id: "caix",
-    parent: "svc",
     sign: 1,
   },
   
@@ -173,93 +151,9 @@ var accounts = [
   },
   
   {
-    name: "Itau",
-    id: "it",
-    parent: "bank",
-    sign: 1,
-  },
-  
-  {
-    name: "Itau Conta Corr",
-    id: "itcor",
-    parent: "it",
-    sign: 1,
-  },
-  
-  {
-    name: "Itau Poupanca",
-    id: "itpou",
-    parent: "it",
-    sign: 1,
-  },
-  
-  {
-    name: "Bradesco",
-    id: "br",
-    parent: "bank",
-    sign: 1,
-  },
-  
-  {
-    name: "Bradesco Conta Corr",
-    id: "brcor",
-    parent: "br",
-    sign: 1,
-  },
-  
-  {
-    name: "Bradesco Poupanca",
-    id: "brpou",
-    parent: "br",
-    sign: 1,
-  },
-  
-  {
-    name: "Bradesco Tesouro Direto",
-    id: "brtes",
-    parent: "br",
-    sign: 1,
-  },
-  
-  {
-    name: "CGD",
-    id: "cgd",
-    parent: "bank",
-    sign: 1,
-  },
-  
-  {
-    name: "CGD Conta Corr",
-    id: "cgdcor",
-    parent: "cgd",
-    sign: 1,
-  },
-  
-  {
-    name: "CGD Acoes",
-    id: "cgdac",
-    parent: "cgd",
-    sign: 1,
-  },
-  
-  {
-    name: "CGD Tesouro Direto",
-    id: "cgdtes",
-    parent: "cgd",
-    sign: 1,
-  },
-
-  {
-    name: "Cold Assets",
-    id: "cold",
-    parent: "assets",
-    sign: 1,
-  },
-
-  {
     name: "Wallets",
     id: "walall",
-    parent: "cold",
+    parent: "assets",
     sign: 1,
   },
 
@@ -269,22 +163,6 @@ var accounts = [
     parent: "walall",
     sign: 1,
   },
-  
-  {
-    name: "Back Wallet",
-    id: "wlbak",
-    parent: "walall",
-    sign: 1,
-  },
-  
-  {
-    name: "Side Wallet",
-    id: "wlsid",
-    parent: "walall",
-    sign: 1,
-  },
-    
-
   
   // END
   

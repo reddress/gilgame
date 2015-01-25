@@ -42,6 +42,7 @@ function bubble_amount(source, amount) {
   }
 }
 
+// UNUSED
 function parse_and_add_transaction(s) {
   var parts = s.split(";");
   for (var i = 0, end = parts.length; i < end; i++) {
@@ -76,6 +77,7 @@ function build_transaction_list(transaction_str_list) {
   return transactions_list;
 }
 
+// UNUSED
 function add_transaction_from_string_parts(desc, amount_str, debit, credit, date_millis) {
   // accept amount as string, remove dot or comma
   // not sanitized
@@ -207,10 +209,21 @@ function htmlify_always_show(node) {
 
 
 function htmlify_transaction_list(focused_account, date_range, transaction_list) {
-  var table_rows = '<tr><td colspan="5"><b>Account:</b> ' + focused_account + ' ' + date_range + '</td></tr>' + 
-    "<tr><td>Date</td><td>debit</td><td>credit</td><td>Description</td><td>Amount</td></tr>";
+  var table_description = '<tr><td colspan="5"><b>Account:</b> ' + focused_account + ' ' + date_range + '</td></tr>';
+  
+  var table_header = "<tr><td>Date</td><td>debit</td><td>credit</td><td>Description</td><td>Amount</td></tr>";
+
+  var table_rows = "";
+
+  var total_debits = 0;
 
   transaction_list.forEach(function(transaction) {
+
+    // add to total debits if transaction is child of focused_account
+    if (children_ids[focused_account].indexOf(transaction.debit) !== -1) {
+      total_debits += transaction.amount;
+    }
+    
     if (transaction.debit === focused_account) {
       transaction.debit = "<b>" + transaction.debit + "</b>";
     }
@@ -230,7 +243,10 @@ function htmlify_transaction_list(focused_account, date_range, transaction_list)
       display_balance(transaction.amount) +
       "</td></tr>";
   });
-  return table_rows;
+
+  var total_debits_row = '<tr><td colspan="5"><b>Total debits:</b> ' + display_balance(total_debits) + "</td></tr>";
+
+  return table_description + total_debits_row + table_header + table_rows;
 }
 
 function apply_transaction_filter(transactions, filter) {
@@ -250,9 +266,18 @@ document.getElementById("update_button").addEventListener('click', function(even
   update_from_form();
 });
 
+document.getElementById("update_search").addEventListener('click', function(event) {
+  update_from_form();
+});
+
 document.getElementById("clear_dates").addEventListener('click', function(event) {
   document.getElementById("start_date").value = "";
   document.getElementById("end_date").value = "";
+  update_from_form();
+});
+
+document.getElementById("clear_search_desc").addEventListener('click', function(event) {
+  document.getElementById("search_desc").value = "";
   update_from_form();
 });
 
@@ -298,13 +323,15 @@ function update_page(transactions, focused_account, start_date, end_date) {
     add_transaction(transaction);
   });
 
-  var transactions_for_account_in_time_period = apply_transaction_filter(transactions_in_time_period, function(transaction) {
-    return children_ids[focused_account].indexOf(transaction.debit) !== -1 || children_ids[focused_account].indexOf(transaction.credit) !== -1;
+  var transactions_for_account_and_desc_in_time_period = apply_transaction_filter(transactions_in_time_period, function(transaction) {
+    return transaction.desc.indexOf(document.getElementById("search_desc").value.trim()) !== -1 &&
+      (children_ids[focused_account].indexOf(transaction.debit) !== -1 ||
+       children_ids[focused_account].indexOf(transaction.credit) !== -1);
   });
 
   document.getElementById("tree_display").innerHTML = htmlify_tree(account_tree);
 
-  document.getElementById("list_table").innerHTML = htmlify_transaction_list(focused_account, "<b>from</b> " + original_start_date + " to " + original_end_date, transactions_for_account_in_time_period);
+  document.getElementById("list_table").innerHTML = htmlify_transaction_list(focused_account, "<b>from</b> " + original_start_date + " to " + original_end_date, transactions_for_account_and_desc_in_time_period);
 }
 
 function initialize_account_tree() {
@@ -316,7 +343,7 @@ function initialize_account_tree() {
 function init() {
   initialize_account_tree();
   update_page(transactions);
-  document.getElementById("balances").innerHTML = "Current balances<br><br>" + htmlify_always_show(account_tree);
+  document.getElementById("balances").innerHTML = "<b>~Gilgame<br>Selected balances</b><br><br>" + htmlify_always_show(account_tree);
 }
 
 init();
