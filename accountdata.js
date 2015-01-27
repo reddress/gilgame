@@ -1,4 +1,10 @@
 // Parent accounts must appear before children
+//
+// Accounting equation is:
+// Assets + Expenses = Liabilities + Equity + Income
+//
+// accounts on the right-hand side have their signs (+/-) switched
+// and is indicated by -1 on the sign property
 
 var accounts = [ 
   {
