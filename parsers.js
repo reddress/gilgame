@@ -1,6 +1,6 @@
 // amount parsing
 function parse_amount(amount_str) {
-  amount_str = amount_str.replace(/,/g, ".");
+  amount_str = amount_str.replace(/,/g, ".").trim();
 
   // separator is first character
   if (amount_str[0] === '.') {

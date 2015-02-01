@@ -197,7 +197,7 @@ function htmlify_always_show(node) {
   
   var html = "";
   if (always_show.indexOf(node.id) !== -1) {
-    html += node.id + " " + display_balance(node.balance) + "<br>";
+    html += '<span onclick="set_account_and_update(\'' + (node.id || "accounts" )+ '\');">' + node.id + "</span> " + display_balance(node.balance) + "<br>";
   }
 
   node.children.forEach(function(child) {
@@ -294,8 +294,6 @@ function set_account_and_update(account) {
 }
 
 function update_page(transactions, focused_account, start_date, end_date) {
-  warnings = "";
-  
   focused_account = focused_account || "accounts";
 
   // save date strings to include in table header
@@ -347,6 +345,7 @@ function initialize_account_tree() {
 function init() {
   initialize_account_tree();
   update_page(transactions);
+  warnings = "";
   document.getElementById("balances").innerHTML = "<b>~Gilgame<br>Selected balances</b><br><br>" + htmlify_always_show(account_tree);
 }
 

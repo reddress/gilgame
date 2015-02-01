@@ -17,6 +17,19 @@ accounts.forEach(function(account) {
 // ensure there are no circular paths
 
 
+// ensure transaction formatting is valid
+
+transactions.forEach(function(transaction) {
+  var fields = transaction.split(";");
+  if (fields.length !== 5) {
+    add_warning("Transaction '" + fields[1].trim() + "' has " + fields.length + " fields, 5 expected.");
+  }
+
+  if (isNaN(parse_amount(fields[2]))) {
+    add_warning("Transaction '" + fields[1].trim() + "' does not have a valid amount: " + fields[2]);
+  }
+});
+
 // ensure account exists
 function account_exists(id) {
   var exists = false;
@@ -51,6 +64,7 @@ test_amount_parsing("1.1", 110);
 
 // starts with separator
 test_amount_parsing(",02", 2);
+test_amount_parsing(".2", 20);
 
 
 // test balance formatting
