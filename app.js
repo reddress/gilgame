@@ -197,7 +197,7 @@ function htmlify_always_show(node) {
   
   var html = "";
   if (always_show.indexOf(node.id) !== -1) {
-    html += '<span onclick="set_account_and_update(\'' + (node.id || "accounts" )+ '\');">' + node.id + "</span> " + display_balance(node.balance) + "<br>";
+    html += '<span onclick="set_account_and_update(\'' + (node.id || "accounts" )+ '\');">' + node.id + " " + display_balance(node.balance) + "</span><br>";
   }
 
   node.children.forEach(function(child) {
