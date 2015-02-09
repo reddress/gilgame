@@ -216,27 +216,27 @@ function htmlify_transaction_list(focused_account, date_range, transaction_list)
   var table_rows = "";
 
   var total_debits = 0;
+  var debits_minus_credits = 0;
 
   transaction_list.forEach(function(transaction) {
 
     // add to total debits if transaction is child of focused_account
     if (children_ids[focused_account].indexOf(transaction.debit) !== -1) {
       total_debits += transaction.amount;
+      debits_minus_credits += transaction.amount;
     }
-    
-    if (transaction.debit === focused_account) {
-      transaction.debit = "<b>" + transaction.debit + "</b>";
+
+    // subtract credits
+    if (children_ids[focused_account].indexOf(transaction.credit) !== -1) {
+      debits_minus_credits -= transaction.amount;
     }
-    if (transaction.credit === focused_account) {
-      transaction.credit = "<b>" + transaction.credit + "</b>";
-    }
-    
+
     table_rows += "<tr><td>" +
       transaction.raw_date +
-      "</td><td>" +
-      transaction.debit +
-      "</td><td>" +
-      transaction.credit +
+      '</td><td><span onclick="set_account_and_update(\'' + transaction.debit + '\'); window.scrollTo(0, 0);">' + transaction.debit + "</span>" +
+      '</td><td><span onclick="set_account_and_update(\'' + transaction.credit + '\'); window.scrollTo(0, 0);">' + transaction.credit + "</span>" +
+//      "</td><td>" + 
+//      transaction.credit +
       "</td><td>" +
       transaction.desc +
       "</td><td>" +
@@ -244,7 +244,7 @@ function htmlify_transaction_list(focused_account, date_range, transaction_list)
       "</td></tr>";
   });
 
-  var total_debits_row = '<tr><td colspan="5"><b>Total debits:</b> ' + display_balance(total_debits) + "</td></tr>";
+  var total_debits_row = '<tr><td colspan="5"><b>Total debits:</b> ' + display_balance(total_debits) + ", <b>Debits minus Credits:</b> " + display_balance(debits_minus_credits) + "</td></tr>";
 
   return table_description + total_debits_row + table_header + table_rows;
 }
