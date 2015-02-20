@@ -19,3 +19,12 @@ function display_balance(amount) {
   var digits = output.length;
   return sign + output.slice(0, digits-2) + "." + output.slice(digits-2);
 }
+
+function first_of_month() {
+  var now = new Date();
+  var day = "1";
+  var month = (now.getMonth() + 1).toString();
+  var year = (now.getYear() - 100).toString();
+  
+  return [day, month, year].join("/");
+}

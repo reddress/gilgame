@@ -89,3 +89,12 @@ test_balance_formatting(-10, "-0.10");
 test_balance_formatting(-100, "-1.00");
 test_balance_formatting(-1000, "-10.00");
 test_balance_formatting(-12345, "-123.45");
+
+// setting initial date to first of month
+function test_first_of_month() {
+  if (first_of_month() !== "1/" + ((new Date()).getMonth() + 1) + "/" + ((new Date()).getYear() - 100)) {
+    add_warning("Did not create first day of month correctly");
+  }
+}
+
+test_first_of_month();

@@ -342,11 +342,23 @@ function initialize_account_tree() {
   save_children_ids(account_tree);
 }
 
+function reset_to_first_of_month() {
+  document.getElementById("start_date").value = first_of_month();
+  document.getElementById("end_date").value = "";
+  update_from_form();
+}
+
 function init() {
   initialize_account_tree();
-  update_page(transactions);
+  // update_page(transactions);
+  
+  // set initial date to first of month
+  document.getElementById("start_date").value = first_of_month();
+  update_from_form();
+
   warnings = "";
   document.getElementById("balances").innerHTML = "<b>~Gilgame<br>Selected balances</b><br><br>" + htmlify_always_show(account_tree);
 }
 
 init();
+
