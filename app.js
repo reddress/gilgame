@@ -324,7 +324,7 @@ function update_page(transactions, focused_account, start_date, end_date) {
   });
 
   var transactions_for_account_and_desc_in_time_period = apply_transaction_filter(transactions_in_time_period, function(transaction) {
-    return transaction.desc.indexOf(document.getElementById("search_desc").value.trim()) !== -1 &&
+    return transaction.desc.toLowerCase().indexOf(document.getElementById("search_desc").value.toLowerCase().trim()) !== -1 &&
       (children_ids[focused_account].indexOf(transaction.debit) !== -1 ||
        children_ids[focused_account].indexOf(transaction.credit) !== -1);
   });
@@ -345,6 +345,11 @@ function initialize_account_tree() {
 function reset_to_first_of_month() {
   document.getElementById("start_date").value = first_of_month();
   document.getElementById("end_date").value = "";
+  update_from_form();
+}
+
+function reset_account() {
+  document.getElementById("focused_account").value = "";
   update_from_form();
 }
 
