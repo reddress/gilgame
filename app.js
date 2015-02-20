@@ -355,14 +355,16 @@ function reset_account() {
 
 function init() {
   initialize_account_tree();
-  // update_page(transactions);
+  update_page(transactions);
+
+  // prepare static elements
+  warnings = "";
+  document.getElementById("balances").innerHTML = "<b>~Gilgame<br>Selected balances</b><br><br>" + htmlify_always_show(account_tree);
   
   // set initial date to first of month
   document.getElementById("start_date").value = first_of_month();
   update_from_form();
 
-  warnings = "";
-  document.getElementById("balances").innerHTML = "<b>~Gilgame<br>Selected balances</b><br><br>" + htmlify_always_show(account_tree);
 }
 
 init();
