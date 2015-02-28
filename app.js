@@ -211,7 +211,11 @@ function htmlify_always_show(node) {
 function htmlify_transaction_list(focused_account, date_range, transaction_list) {
   var table_description = '<tr><td colspan="5"><b>Account:</b> ' + focused_account + ' ' + date_range + '</td></tr>';
   
-  var table_header = "<tr><td>Date</td><td>debit</td><td>credit</td><td>Description</td><td>Amount</td></tr>";
+  var table_header = '<tr><td class="transactions-header">Date</td>' +
+    '<td class="transactions-header">debit</td>' +
+    '<td class="transactions-header">credit</td>' +
+    '<td class="transactions-header">Description</td>' +
+    '<td class="amount transactions-header">Amount</td></tr>';
 
   var table_rows = "";
 
@@ -239,7 +243,7 @@ function htmlify_transaction_list(focused_account, date_range, transaction_list)
 //      transaction.credit +
       "</td><td>" +
       transaction.desc +
-      "</td><td>" +
+      '</td><td class="amount">' +
       display_balance(transaction.amount) +
       "</td></tr>";
   });

@@ -26,17 +26,26 @@ div {
 }
 
 table {
-	border-width: 0 0 1px 1px;
+	/* border-width: 0 0 1px 1px; */
 	border-spacing: 0;
-	border-style: solid;
-	border-collapse: collapse;
+	/* border-style: solid; */
+	/* border-collapse: collapse; */
 }
 
 td {
-	border-width: 1px 1px 0 0;
-	border-style: solid;
+	/* border-width: 1px 1px 0 0; */
+	/* border-style: solid; */
+    border-bottom: 1px dotted #CCCCCC; 
 	margin: 0;
 	padding: 3px;
+}
+
+.amount {
+    text-align: right;
+}
+
+.transactions-header {
+    font-weight: bold;
 }
 
 ul {
