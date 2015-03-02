@@ -211,11 +211,13 @@ function htmlify_always_show(node) {
 function htmlify_transaction_list(focused_account, date_range, transaction_list) {
   var table_description = '<tr><td colspan="5"><b>Account:</b> ' + focused_account + ' ' + date_range + '</td></tr>';
   
-  var table_header = '<tr><td class="transactions-header">Date</td>' +
+  var table_header = '<tr>' +
+    '<td class="amount transactions-header">Description</td>' +
+    '<td class="amount transactions-header">Amount</td>' +
+    '<td class="transactions-header">Date</td>' +
     '<td class="transactions-header">debit</td>' +
     '<td class="transactions-header">credit</td>' +
-    '<td class="transactions-header">Description</td>' +
-    '<td class="amount transactions-header">Amount</td></tr>';
+    '</tr>';
 
   var table_rows = "";
 
@@ -235,17 +237,22 @@ function htmlify_transaction_list(focused_account, date_range, transaction_list)
       debits_minus_credits -= transaction.amount;
     }
 
-    table_rows += "<tr><td>" +
-      transaction.raw_date +
-      '</td><td><span onclick="set_account_and_update(\'' + transaction.debit + '\'); window.scrollTo(0, 0);">' + transaction.debit + "</span>" +
-      '</td><td><span onclick="set_account_and_update(\'' + transaction.credit + '\'); window.scrollTo(0, 0);">' + transaction.credit + "</span>" +
-//      "</td><td>" + 
-//      transaction.credit +
-      "</td><td>" +
+    table_rows += "<tr>" +
+      '<td class="amount">' +
       transaction.desc +
       '</td><td class="amount">' +
       display_balance(transaction.amount) +
-      "</td></tr>";
+      "</td>" +
+      
+    "<td>" +
+      transaction.raw_date +
+      '</td><td><span onclick="set_account_and_update(\'' + transaction.debit + '\'); window.scrollTo(0, 0);">' + transaction.debit + "</span>" +
+      '</td><td><span onclick="set_account_and_update(\'' + transaction.credit + '\'); window.scrollTo(0, 0);">' + transaction.credit + "</span>" +
+      //      "</td><td>" + 
+      //      transaction.credit +
+      '</td>' +
+      
+    "</tr>";
   });
 
   var total_debits_row = '<tr><td colspan="5"><b>Total debits:</b> ' + display_balance(total_debits) + ", <b>Debits minus Credits:</b> " + display_balance(debits_minus_credits) + "</td></tr>";
