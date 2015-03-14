@@ -14,7 +14,15 @@ accounts.forEach(function(account) {
   account_ids.push(account.id);
 });
 
-// ensure there are no circular paths
+// ensure account references an existing parent
+var existingAccountIds = ['accounts'];
+
+accounts.forEach(function(account) {
+  if (existingAccountIds.indexOf(account.parent) === -1) {
+    add_warning("ERROR: Account " + account.name + " refers to nonexistent parent " + account.parent);
+  }
+  existingAccountIds.push(account.id);
+});
 
 
 // ensure transaction formatting is valid

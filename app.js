@@ -1,6 +1,7 @@
 // Gilgame: the undead turtle who exponentially hoards Gil
 
 
+
 // build account tree
 
 var account_tree = { id: "accounts", children: [] };
@@ -43,6 +44,7 @@ function bubble_amount(source, amount) {
 }
 
 // UNUSED
+/*
 function parse_and_add_transaction(s) {
   var parts = s.split(";");
   for (var i = 0, end = parts.length; i < end; i++) {
@@ -51,6 +53,7 @@ function parse_and_add_transaction(s) {
   
   add_transaction_from_string_parts(parts[1], parts[2], parts[3], parts[4], parse_dmy(parts[0]));
 }
+*/
 
 function parse_transaction(s) {
   var parts = s.split(";");
@@ -78,6 +81,7 @@ function build_transaction_list(transaction_str_list) {
 }
 
 // UNUSED
+/*
 function add_transaction_from_string_parts(desc, amount_str, debit, credit, date_millis) {
   // accept amount as string, remove dot or comma
   // not sanitized
@@ -101,6 +105,7 @@ function add_transaction_from_string_parts(desc, amount_str, debit, credit, date
     add_warning(desc + ": account(s) does not exist. " + debit + "/" + credit);
   }
 }
+*/
 
 function add_transaction(transaction) {
   // accept amount as string, remove dot or comma
@@ -369,7 +374,7 @@ function init() {
   update_page(transactions);
 
   // prepare static elements
-  warnings = "";
+  // warnings = "";
   document.getElementById("balances").innerHTML = "<b>~Gilgame<br>Selected balances</b><br><br>" + htmlify_always_show(account_tree);
   
   // set initial date to first of month
