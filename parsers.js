@@ -39,7 +39,7 @@ function parse_dmy(dmy) {
   if (year < 100) {
     year += 2000;
   }
-  var month = parseInt(parts[1], 10) + 1;
+  var month = parseInt(parts[1], 10) - 1;
   var day = parseInt(parts[0], 10);
   
   // var iso_formatted = year + "-" + parts[1] + "-" + parts[0];
