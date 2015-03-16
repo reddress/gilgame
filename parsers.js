@@ -44,12 +44,13 @@ function parse_dmy(dmy) {
   
   // var iso_formatted = year + "-" + parts[1] + "-" + parts[0];
   // var millis = new Date(iso_formatted).getTime();
-  var millis = new Date(year, month, day);
 
-  if (isNaN(millis)) {
+  var parsedDate = new Date(year, month, day);
+
+  if (isNaN(parsedDate)) {
     add_warning("Invalid date: " + iso_formatted + ". Using today's date.");
     return new Date().getTime();
   } else {
-    return millis;
+    return parsedDate;
   }
 }

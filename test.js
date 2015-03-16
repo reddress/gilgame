@@ -106,3 +106,10 @@ function test_first_of_month() {
 }
 
 test_first_of_month();
+
+// test date parsing
+var target = parse_dmy("31/12/14").getTime();
+var rawDate = new Date(2014, 11, 31).getTime();
+if (target !== rawDate) {
+  add_warning("Dates not parsed correctly");
+}
