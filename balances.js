@@ -1,3 +1,3 @@
 // always display current balances for these accounts
 
-var always_show = ['itcor', 'wal', 'wlsid'];
+var always_show = ['itcor', 'wal'];
