@@ -55,7 +55,7 @@ function parse_and_add_transaction(s) {
 }
 */
 
-function parse_transaction(s) {
+function parse_transaction(s, transactionNum) {
   var parts = s.split(";");
   for (var i = 0, end = parts.length; i < end; i++) {
     parts[i] = parts[i].trim();
@@ -67,14 +67,18 @@ function parse_transaction(s) {
            'debit': parts[3],
            'credit': parts[4],
            'raw_date': parts[0],
+           'transactionNum': transactionNum,
          };
 }
 
 function build_transaction_list(transaction_str_list) {
   var transactions_list = [];
 
+  var transactionNum = 1;
+  
   transaction_str_list.forEach(function(transaction_str) {
-    transactions_list.push(parse_transaction(transaction_str));
+    transactions_list.push(parse_transaction(transaction_str, transactionNum));
+    transactionNum += 1;
   });
 
   return transactions_list;
@@ -222,12 +226,16 @@ function htmlify_transaction_list(focused_account, date_range, transaction_list)
     '<td class="transactions-header">Date</td>' +
     '<td class="transactions-header">debit</td>' +
     '<td class="transactions-header">credit</td>' +
+    '<td class="transactions-header">row</td>' +
+    '<td class="transactions-header">id</td>' +
     '</tr>';
 
   var table_rows = "";
 
   var total_debits = 0;
   var debits_minus_credits = 0;
+
+  var rowNum = 1;
 
   transaction_list.forEach(function(transaction) {
 
@@ -256,8 +264,12 @@ function htmlify_transaction_list(focused_account, date_range, transaction_list)
       //      "</td><td>" + 
       //      transaction.credit +
       '</td>' +
+      '<td>' + rowNum + '</td>' +
+      '<td>' + transaction.transactionNum + '</td>' +
       
     "</tr>";
+
+    rowNum += 1;
   });
 
   var total_debits_row = '<tr><td colspan="5"><b>Total debits:</b> ' + display_balance(total_debits) + ", <b>Debits minus Credits:</b> " + display_balance(debits_minus_credits) + "</td></tr>";
