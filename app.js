@@ -74,11 +74,11 @@ function parse_transaction(s, transactionNum) {
 function build_transaction_list(transaction_str_list) {
   var transactions_list = [];
 
-  var transactionNum = 1;
+  var transactionNum = transaction_str_list.length;
   
   transaction_str_list.forEach(function(transaction_str) {
     transactions_list.push(parse_transaction(transaction_str, transactionNum));
-    transactionNum += 1;
+    transactionNum -= 1;
   });
 
   return transactions_list;
