@@ -1,5 +1,8 @@
 secret_accountdata.js
 secret_transactiondata.js
+secret_pre_june2015_accountdata.js
+secret_pre_june2015_transactiondata.js
+secret_*.js
 repeated_transactions.js
 original_transactions.js
 \#*
